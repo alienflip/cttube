@@ -37,6 +37,11 @@ int main(int argc, char *argv[]){
     } 
     printf("COMPILING...\n");
     transformer(&logic_table);  // Process the logic table into a boolean expression.
+    FILE *fp = fopen("output_expression", "ab");
+    if (fp != NULL) {
+        fputs(logic_table.output_expression, fp);
+        fclose(fp);
+    }
     printf("---\nCOMPILED EXPRESSION:\n---\n%s \n", logic_table.output_expression);
     return 0;
 }

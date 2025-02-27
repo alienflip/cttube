@@ -21,7 +21,7 @@ A B C D | X
 Which evaluates to the following `boolean expression`:
 
 ```
-(((~A)&(~B)&(~C)&(~D))|((~A)&(B)&(~C)&(D))|((A)&(~B)&(~C)&(D))|((A)&(B)&(~C)&(~D))|((A)&(B)&(C)&(D)))
+((~A)&(~B)&(~C)&(~D))|((~A)&(B)&(~C)&(D))|((A)&(~B)&(~C)&(D))|((A)&(B)&(~C)&(~D))|((A)&(B)&(C)&(D)) 
 ```
 
 Here is more on this logical relationship [proof](https://en.wikipedia.org/wiki/Canonical_normal_form)
