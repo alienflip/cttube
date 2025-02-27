@@ -18,29 +18,25 @@
 #include "cttube.h"
 
 int main(int argc, char *argv[]){
-    logic_table logic_table;    // define in-program struct for compilation
+    logic_table logic_table;    // define struct to hold compilation of output boolean expression
     logic_table.height=0;
-    char *file_name = NULL; // read file into program
+    char *file_name = NULL;
     if (argc > 1) file_name = argv[1];
     else return printf("No argument provided!\n");
     FILE* file = fopen(file_name, "r");
-    if (file != NULL) {
-        printf("---\nPARSING...\n---\n");
+    if (file == NULL) return fprintf(stderr, "File cannot be opened: %s\n", file_name);
+    else {
+        printf("PARSING...\n");
         char line[MAX_ARRAY_WIDTH];
         int counter = 0;
-        while (fgets(line, sizeof(line), file)) {   // parse input file line by line
-            parser(&logic_table, line, strlen(line), counter);
+        while (fgets(line, sizeof(line), file)) {
+            parser(&logic_table, line, strlen(line), counter);  // parse input file into the logic table
             counter++;
         }
-        printf("META:: in:%d|out:%d|height:%d\n", 
-            logic_table.input_width, logic_table.output_width, logic_table.height); // After parsing, print out some meta information about the logic table.
-        printf("HEAD:: %s\n", logic_table.header);
-        for(int i = 0; i < logic_table.height; i++) printf("BODY:: %s\n", logic_table.body[i]);
         fclose(file);
-    } else {
-        fprintf(stderr, "File cannot be opened: %s\n", file_name);
-    }
-    printf("\n---\nTRANSFORMING...\n---\n");
-    transformer(&logic_table);  // Call the 'transformer' function to process the logic table into a boolean expression.
+    } 
+    printf("COMPILING...\n");
+    transformer(&logic_table);  // Process the logic table into a boolean expression.
+    printf("---\nCOMPILED EXPRESSION:\n---\n%s \n", logic_table.output_expression);
     return 0;
 }

@@ -10,6 +10,7 @@ typedef struct {
     int height;
     char header[MAX_ARRAY_WIDTH];
     char body[MAX_ARRAY_HEIGHT][MAX_ARRAY_WIDTH];
+    char output_expression[MAX_ARRAY_HEIGHT*MAX_ARRAY_WIDTH];
 } logic_table;
 
 void parser(logic_table* logic_table, char* line, int len, int counter);

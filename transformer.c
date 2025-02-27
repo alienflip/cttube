@@ -19,26 +19,22 @@
 
 // Function to transform a the logic table structure into a boolean expression
 void transformer(logic_table* logic_table){
-    char final_expression[MAX_ARRAY_WIDTH*MAX_ARRAY_HEIGHT] = {'('};
-    for(int l = 0; l < logic_table->height; l++){   // Loop through each row of the logic table (l = row index)
+    for(int l = 0; l < logic_table->height; l++){
         char top_expression[MAX_ARRAY_WIDTH] = {'('};
-        for(int c = logic_table->input_width-1; c >= 0; c--){   // Loop through each column of the logic table's row, reading the values backwards (Note: This is because the table was parsed backwards to ensure expressions evaluate correctly to logical 1)
+        for(int c = logic_table->input_width-1; c >= 0; c--){   // (Note: table was parsed backwards to ensure expressions evaluate to logical 1)
             char input_value = logic_table->header[c];  // Get the header (input value) for the current column
             char expression[8] = {};
-            if(logic_table->body[l][c] == '0' && c > 0) snprintf(expression, sizeof(expression), "(%c%c)&", '~', input_value);  // Case when the value at [l][c] is '0' and c > 0, format the atomic expression to negate the input (Note: there is an '&' symbol because it is not yet the end of the line)
+            if(logic_table->body[l][c] == '0' && c > 0) snprintf(expression, sizeof(expression), "(%c%c)&", '~', input_value);  // Not the end of the line => '&' symbol )
             if(logic_table->body[l][c] == '0' && c == 0) snprintf(expression, sizeof(expression), "(%c%c)", '~', input_value);
-            if(logic_table->body[l][c] == '1' && c > 0) snprintf(expression, sizeof(expression), "(%c)&", input_value);
-            if(logic_table->body[l][c] == '1' && c == 0) snprintf(expression, sizeof(expression), "(%c)", input_value); // Case when the value at [l][c] is '1' and c == 0, format the atomic expression for the input without negation (Note: there is no '&' symbol because it is the end of the line)
+            if(logic_table->body[l][c] == '1' && c > 0) snprintf(expression, sizeof(expression), "(%c)&", input_value); // Value == '1' => not '~' symbol )
+            if(logic_table->body[l][c] == '1' && c == 0) snprintf(expression, sizeof(expression), "(%c)", input_value);
             strcat(top_expression, expression); // Concatenate the expression to the current expression
         }
         strcat(top_expression, ")");
         if(l < logic_table->height - 1){    // If not the last row, concatenate the current expression with a '|' (OR operator) for joining different rows
-            strcat(final_expression, top_expression);
-            strcat(final_expression, "|");
+            strcat(logic_table->output_expression, top_expression);
+            strcat(logic_table->output_expression, "|");
         }
-        if(l == logic_table->height - 1) strcat(final_expression, top_expression);  // If it's the last row, just concatenate the current expression (without the OR operator)
-        printf("CURRENT EXPRESSION:: %s \n", top_expression);
+        if(l == logic_table->height - 1) strcat(logic_table->output_expression, top_expression);  // Concatenate the current expression (without the OR operator)
     }
-    strcat(final_expression, ")");
-    printf("\n---\nCOMPILED EXPRESSION:\n---\n%s \n", final_expression);
 }

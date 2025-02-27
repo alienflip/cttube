@@ -20,29 +20,29 @@
 // Function to build a logic table from a .tb file
 void parser(logic_table* logic_table, char* line, int len, int line_counter){
     char io_flag = 'o'; // A flag to determine whether we're processing inputs ('i') or outputs ('o')
-    int input_counter = 0;  // Counters for inputs and outputs to track how many inputs and outputs are processed
+    int input_counter = 0;  // Track how many inputs and outputs are processed
     int output_counter = 0;
     for(int i = len-1; i >=0; i--){ // Iterate through the line starting from the end (from right to left)
-        if(line[i] == '|') io_flag = 'i';   // If the current character is '|', switch the io_flag to 'i' for input (everything before '|' is output)
-        if(line[i] == ' ' || line[i] == '|' || line[i] == '\n') continue;   // Skip spaces, '|' (delimiter), and newline characters (these are not part of the data)
-        if(line_counter == 0) { // header
+        if(line[i] == '|') io_flag = 'i';   // Switch the io_flag to 'i' for input
+        if(line[i] == ' ' || line[i] == '|' || line[i] == '\n') continue;   // Skip non important data
+        if(line_counter == 0) { // parse header
             if(io_flag == 'o') {
-                logic_table->header[output_counter] = line[i];  // If it's an output, store the character in the header at the current input index
+                logic_table->header[output_counter] = line[i];  // Store the character in the header
                 output_counter++;   // Increment the output index
             }
             else {
                 logic_table->header[input_counter] = line[i];
                 input_counter++;
             }
-            logic_table->input_width = input_counter;   // After processing all inputs and outputs, update the input and output widths
+            logic_table->input_width = input_counter;   // Update the input and output widths
             logic_table->output_width = output_counter; 
         }
-        if(line_counter > 1) {  // body
+        if(line_counter > 1) {  // parse body
             if(line[len-2] != '1') break;   // expression must evaluate to logic 1
             if(io_flag == 'o') continue;    // dont include output elements in the body
             logic_table->body[logic_table->height][input_counter] = line[i];
             input_counter++;
-            if(i==0) logic_table->height++; // If we reached the beginning of the line, increment the height to move to the next row in the body
+            if(i==0) logic_table->height++; // Increment the height to move to the next row in the body
         }
     }
 }
