@@ -24,6 +24,6 @@ Which evaluates to the following `boolean expression`:
 ((~A)&(~B)&(~C)&(~D))|((~A)&(B)&(~C)&(D))|((A)&(~B)&(~C)&(D))|((A)&(B)&(~C)&(~D))|((A)&(B)&(C)&(D)) 
 ```
 
-Here is more on this logical relationship [proof](https://en.wikipedia.org/wiki/Canonical_normal_form)
+Here is [more on this logical relationship](https://en.wikipedia.org/wiki/Canonical_normal_form)
 
-> to run this program, edit the `.tb` file and then run `./compile.sh`
+> To run this program, edit the `.tb` file to your desired truth table, and then run `./compile.sh`

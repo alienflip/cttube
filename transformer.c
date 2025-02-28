@@ -28,13 +28,13 @@ void transformer(logic_table* logic_table){
             if(logic_table->body[l][c] == '0' && c == 0) snprintf(expression, sizeof(expression), "(%c%c)", '~', input_value);
             if(logic_table->body[l][c] == '1' && c > 0) snprintf(expression, sizeof(expression), "(%c)&", input_value); // Value == '1' => not '~' symbol )
             if(logic_table->body[l][c] == '1' && c == 0) snprintf(expression, sizeof(expression), "(%c)", input_value);
-            strcat(top_expression, expression); // Concatenate the expression to the current expression
+            strncat(top_expression, expression, sizeof(expression));
         }
-        strcat(top_expression, ")");
+        strncat(top_expression, ")", sizeof(")"));
         if(l < logic_table->height - 1){    // If not the last row, concatenate the current expression with a '|' (OR operator) for joining different rows
-            strcat(logic_table->output_expression, top_expression);
-            strcat(logic_table->output_expression, "|");
+            strncat(logic_table->output_expression, top_expression, sizeof(top_expression));
+            strncat(logic_table->output_expression, "|", sizeof("|"));
         }
-        if(l == logic_table->height - 1) strcat(logic_table->output_expression, top_expression);  // Concatenate the current expression (without the OR operator)
+        if(l == logic_table->height - 1) strncat(logic_table->output_expression, top_expression, sizeof(top_expression));  // Concatenate the current expression (without the OR operator)
     }
 }
