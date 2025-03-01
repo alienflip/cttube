@@ -18,7 +18,7 @@
 #include "cttube.h"
 
 int main(int argc, char *argv[]){
-    logic_table logic_table;    // define struct to hold compilation of output boolean expression
+    logic_table logic_table;    // Define struct to hold compilation data and output
     logic_table.height=0;
     char *file_name = NULL;
     if (argc > 1) file_name = argv[1];
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
         char line[MAX_ARRAY_WIDTH];
         int counter = 0;
         while (fgets(line, sizeof(line), file)) {
-            parser(&logic_table, line, strlen(line), counter);  // parse input file into the logic table
+            parser(&logic_table, line, strlen(line), counter);  // Parse input file into the logic table
             counter++;
         }
         fclose(file);

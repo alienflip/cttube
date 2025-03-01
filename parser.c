@@ -20,14 +20,14 @@
 // Function to build a logic table from a .tb file
 void parser(logic_table* logic_table, char* line, int len, int line_counter){
     char io_flag = 'o'; // A flag to determine whether we're processing inputs ('i') or outputs ('o')
-    int input_counter = 0;  // Track how many inputs and outputs are processed
+    int input_counter = 0;
     int output_counter = 0;
-    for(int i = len-1; i >=0; i--){ // Iterate through the line starting from the end (from right to left)
+    for(int i = len-1; i >=0; i--){ // Iterate through the line starting from the end ()
         if(line[i] == '|') io_flag = 'i';   // Switch the io_flag to 'i' for input
         if(line[i] == ' ' || line[i] == '|' || line[i] == '\n') continue;   // Skip non important data
-        if(line_counter == 0) { // parse header
-            if(io_flag == 'o') {
-                logic_table->header[output_counter] = line[i];  // Store the character in the header
+        if(line_counter == 0) { // Parse header
+            if(io_flag == 'o') { // Make sure we are analying header values, not input values
+                logic_table->header[output_counter] = line[i];
                 output_counter++;   // Increment the output index
             }
             else {
@@ -37,7 +37,7 @@ void parser(logic_table* logic_table, char* line, int len, int line_counter){
             logic_table->input_width = input_counter;   // Update the input and output widths
             logic_table->output_width = output_counter; 
         }
-        if(line_counter > 1) {  // parse body
+        if(line_counter > 1) {  // Parse body
             if(line[len-2] != '1') break;   // expression must evaluate to logic 1
             if(io_flag == 'o') continue;    // dont include output elements in the body
             logic_table->body[logic_table->height][input_counter] = line[i];
