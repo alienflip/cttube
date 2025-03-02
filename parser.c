@@ -38,7 +38,7 @@ void parser(logic_table* logic_table, char* line, int len, int line_counter){
             logic_table->output_width = output_counter; 
         }
         if(line_counter > 1) {  // Parse body
-            if(line[len-2] != '1') break;   // expression must evaluate to logic 1
+            if(len >= 2 && line[len-2] != '1') break;   // stop overflow & expression must evaluate to logic 1
             if(io_flag == 'o') continue;    // dont include output elements in the body
             logic_table->body[logic_table->height][input_counter] = line[i];
             input_counter++;
