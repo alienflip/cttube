@@ -26,7 +26,7 @@ int main(int argc, char *argv[]){
     FILE* file = fopen(file_name, "r");
     if (file == NULL) return fprintf(stderr, "File cannot be opened: %s\n", file_name);
     else {
-        printf("PARSING...\n");
+        printf("START:%s\n***\nPARSING...\n", file_name);
         char line[MAX_ARRAY_WIDTH];
         int counter = 0;
         while (fgets(line, sizeof(line), file)) {
@@ -37,11 +37,14 @@ int main(int argc, char *argv[]){
     } 
     printf("COMPILING...\n");
     transformer(&logic_table);  // Process the logic table into a boolean expression.
-    FILE *fp = fopen("output_expression", "ab");
+    FILE *fp = fopen("tests/output_expressions", "ab");
     if (fp != NULL) {
+        fputs(file_name, fp);
+        fputs(":", fp);
         fputs(logic_table.output_expression, fp);
+        fputs("\n", fp);
         fclose(fp);
     }
-    printf("---\nCOMPILED EXPRESSION:\n---\n%s \n", logic_table.output_expression);
+    printf("COMPILED EXPRESSION:\n%s\n***\nEND\n\n", logic_table.output_expression);
     return 0;
 }
